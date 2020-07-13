@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../header"); %>
+<body>
+    <%- include("../menu"); %>
+    <!-- Start your project here-->  
+    
+    <!-- Material input -->
+    <div class="md-form">
+        <input 
+            type="text"
+            id="input" 
+            value="<%= result.input %>"
+            class="form-control"
+            readonly
+        />
+        <label for="input">Input</label>
+    </div>
+
+    <!-- Material input -->
+    <div class="md-form">
+        <input 
+            type="text"
+            id="output" 
+            value="<%= result.output %>"
+            class="form-control"
+            readonly
+        />
+        <label for="output">Output</label>
+    </div>
+    <button 
+        type="button" 
+        class="btn btn-primary"
+        onclick="location.href='/api/problem/<%= result.problemId %>/example'"
+    >목록</button>
+    <button 
+        type="button" 
+        class="btn btn-primary"
+        onclick="location.href='/api/example/<%= result._id%>/edit'"
+    >수정</button>
+    <button 
+        id = "deleteBtn"
+        type="button" 
+        class="btn btn-primary"
+    >삭제</button>
+
+    <!-- End your project here-->
+    <%- include("../footer"); %>
+    <script>
+        $(function () {
+            // 삭제
+            $("#deleteBtn").on("click", () =>{
+                //event.preventDefault();
+                const result = confirm("삭제하시겠습니까?");
+                //const pid = "<%= result.problemId %>";
+                if(result){
+                    $.ajax({
+                        url: "/api/example/<%= result._id %>",
+                        type: "DELETE"
+                    }).done(()=>{
+                        location.href = "/api/example/<%= result._id %>";
+                    }).fail((request, status, error) => {
+                        alert(request.responseText);
+                    });
+                } else{
+                    console.log("삭제 취소");
+                }
+            })
+        });
+    </script>
+</body>
+</html>

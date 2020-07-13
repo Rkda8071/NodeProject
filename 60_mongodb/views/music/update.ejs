@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../header"); %>
+<body>
+    <%- include("../menu"); %>
+    <form id="updateForm">
+        <!-- Start your project here-->  
+        
+        <!-- Material input -->
+        <div class="md-form">
+            <input 
+                type="text"
+                id="singer"
+                value="<%= result.singer %>" 
+                class="form-control"
+                required
+            />
+            <label for="singer">Input Singer</label>
+        </div>
+
+        <div class="md-form">
+            <input 
+                type="text"
+                id="title" 
+                value="<%= result.title %>" 
+                class="form-control"
+                required
+            />
+            <label for="title">Input Title</label>
+        </div>
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+        >저장</button>
+    </form>
+    <!-- End your project here-->
+    <%- include("../footer"); %>
+    <script>
+        $(function(){
+            $("#updateForm").submit((event) => {
+                event.preventDefault();
+                //console.log("called");
+                const singer = $("#singer").val();
+                const title = $("#title").val();
+                
+                $.ajax({
+                    url: "/api/music/<%=result._id %>",
+                    type: "PUT",
+                    data : {singer, title},
+                }).done(() => {
+                    location.href = "/api/music/<%=result._id %>";
+                }).fail((request, status, error) => {
+                    alert(request.responseText);
+                });
+                //console.log(singer,title);
+            });
+        });
+    </script>
+
+</body>
+</html>

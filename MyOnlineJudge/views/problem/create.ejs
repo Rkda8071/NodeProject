@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../header"); %>
+<body>
+    <%- include("../menu"); %>
+    <form id="createForm">
+        <!-- Start your project here-->  
+        
+        <!-- Material input -->
+        <div class="md-form">
+            <input 
+                type="text"
+                id="title" 
+                class="form-control"
+                required
+            />
+            <label for="title">Input Title</label>
+        </div>
+
+        <div class="form-group">
+            <label for="text">Large textarea</label>
+            <textarea class="form-control rounded-0" id="text" rows="10"></textarea>
+        </div>
+        
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+            
+        >저장</button>
+    </form>
+    <!-- End your project here-->
+    <%- include("../footer"); %>
+    <script>
+        $(function(){
+            $("#createForm").submit((event) => {
+                event.preventDefault();
+                //console.log("called");
+                const title = $("#title").val();
+                const text = $("#text").val();
+                
+                $.ajax({
+                    url: "/api/problem",
+                    type: "POST",
+                    data : {title, text},
+                }).done(() => {
+                    location.href = "/api/problem";
+                }).fail((request, status, error) => {
+                    alert(request.responseText);
+                });
+                //console.log(singer,title);
+            });
+        });
+    </script>
+
+</body>
+</html>

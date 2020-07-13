@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../header"); %>
+<body>
+    <%- include("../menu"); %>
+    <!-- Start your project here-->  
+    
+    <!-- Material input -->
+    <div class="md-form">
+        <input 
+            type="text"
+            id="title" 
+            value="<%= result.title %>"
+            class="form-control"
+            readonly
+        />
+        <label for="title">Title</label>
+    </div>
+
+    <!-- Material input -->
+    <div class="form-group">
+        <label for="text">Text</label>
+        <textarea 
+            class="form-control rounded-0" 
+            id="text" 
+            readonly
+            rows="10"
+        ><%= result.text %></textarea>
+    </div>
+    
+    <button 
+        type="button" 
+        class="btn btn-primary"
+        onclick="location.href='/api/problem'"
+    >목록</button>
+    <button 
+        type="button" 
+        class="btn btn-primary"
+        onclick="location.href='/api/problem/<%= result._id%>/edit'"
+    >수정</button>
+    <button 
+        id = "deleteBtn"
+        type="button" 
+        class="btn btn-primary"
+    >삭제</button>
+    <button 
+        type="button" 
+        class="btn btn-primary"
+        onclick="location.href='/api/problem/<%= result._id%>/example'"
+    >예제 데이터 목록</button>
+    <!-- End your project here-->
+    <%- include("../footer"); %>
+    <script>
+        $(function () {
+            // 삭제
+            $("#deleteBtn").on("click", () =>{
+                //event.preventDefault();
+                const result = confirm("삭제하시겠습니까?");
+                if(result){
+                    $.ajax({
+                        url: "/api/problem/<%= result._id %>",
+                        type: "DELETE"
+                    }).done(()=>{
+                        location.href = "/api/problem";
+                    }).fail((request, status, error) => {
+                        alert(request.responseText);
+                    });
+                } else{
+                    console.log("삭제 취소");
+                }
+            })
+        });
+    </script>
+</body>
+</html>

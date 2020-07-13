@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../header"); %>
+<body>
+    <!-- Start your project here-->  
+    <%- include("../menu"); %>
+    <button 
+        type="button" 
+        class="btn btn-primary"
+        onclick="location.href='/api/example/new'"
+    >등록</button>
+    <div class="row row-cols-1 row-cols-md-1">
+    <% result.forEach(example => { %>
+    <div class="col mb-4">
+        <!-- Card -->
+        <div class="card">
+
+            <!-- Card image -->
+            <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.jpg" alt="Card image cap">
+        
+            <!-- Card content -->
+            <div class="card-body">
+        
+            <!-- Title -->
+            
+            <!-- Text -->
+            
+            <!-- Button -->
+            <a href="/api/example/<%= example._id %>" class="btn btn-primary">상세 조회</a>
+        
+            </div>
+        </div>
+    </div>
+    <!-- Card -->
+    <% }) %>
+    </div>
+    <!-- End your project here-->
+
+    <%- include("../footer"); %>
+
+</body>
+</html>

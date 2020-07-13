@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../header"); %>
+<body>
+    <%- include("../menu"); %>
+    <form id="createForm">
+        <!-- Start your project here-->  
+        
+        <!-- Material input -->
+        <div class="md-form">
+            <input 
+                type="text"
+                id="director" 
+                class="form-control"
+                required
+            />
+            <label for="director">Input Director</label>
+        </div>
+
+        <div class="md-form">
+            <input 
+                type="text"
+                id="title" 
+                class="form-control"
+                required
+            />
+            <label for="title">Input Title</label>
+        </div>
+
+        <div class="md-form">
+            <input 
+                type="text"
+                id="year" 
+                class="form-control"
+                required
+            />
+            <label for="year">Input Year</label>
+        </div>
+
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+            
+        >저장</button>
+    </form>
+    <!-- End your project here-->
+    <%- include("../footer"); %>
+    <script>
+        $(function(){
+            $("#createForm").submit((event) => {
+                event.preventDefault();
+                //console.log("called");
+                const director = $("#director").val();
+                const title = $("#title").val();
+                const year = $("#year").val();
+                
+                $.ajax({
+                    url: "/api/movie",
+                    type: "POST",
+                    data : {director, title, year},
+                }).done(() => {
+                    location.href = "/api/movie";
+                }).fail((request, status, error) => {
+                    alert(request.responseText);
+                });
+                //console.log(singer,title);
+            });
+        });
+    </script>
+
+</body>
+</html>

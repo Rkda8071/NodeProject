@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../header"); %>
+<body>
+    <%- include("../menu"); %>
+    <form id="createForm">
+        <!-- Start your project here-->  
+
+        <!-- 문제 선택 dropdown-->        
+        <button
+        class="btn btn-primary dropdown-toggle mr-4"
+        type="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+        > 문제 선택 </button>
+
+        <div class="dropdown-menu">
+            <% result.forEach(problem => {%>
+            <a class="dropdown-item" value="<%= problem._id %>"
+            ><%= problem.title %>
+            </a>
+            <% }) %>
+        </div>
+
+        <div class="form-group">
+            <label for="code">코드</label>
+            <textarea class="form-control rounded-0" id="code" rows="10"></textarea>
+        </div>
+        
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+        >저장</button>
+    </form>
+    <!-- End your project here-->
+    <%- include("../footer"); %>
+    <script>
+        var pid;// = $("#pid").val();
+        $(".dropdown-item").click(function(e){
+          pid = e.target.attributes.value;
+          console.log(pid.value);
+        });
+        $(function(){ 
+            $("#createForm").submit((event) => {
+                event.preventDefault();
+                const problemId = pid.value;
+                const code = $("#code").val();
+                console.log(code);
+                console.log(problemId);
+                $.ajax({
+                    url: "/api/submit",
+                    type: "POST",
+                    data: { problemId, code },
+                }).done(() => {
+                    location.href = "/api/submit";
+                }).fail((request, status, error) => {
+                    alert(request.responseText);
+                });
+                //console.log(singer,title);
+            });
+        });
+    </script>
+
+</body>
+</html>

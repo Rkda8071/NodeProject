@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../header"); %>
+  <body>
+    <%- include("../menu"); %>
+    <form id="createForm">
+      <!-- Start your project here-->
+
+      <!-- Basic dropdown -->
+      <button
+        class="btn btn-primary dropdown-toggle mr-4"
+        type="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        문제 선택
+      </button>
+
+      <div class="dropdown-menu">
+        <% result.forEach(problem => {%>
+        <a class="dropdown-item" value="<%= problem._id %>"
+          ><%= problem.title %>
+        </a>
+        <% }) %>
+      </div>
+      <!-- Basic dropdown -->
+
+      <!-- Material input -->
+
+      <div class="md-form">
+        <input type="text" id="input" class="form-control" required />
+        <label for="input">Input input data</label>
+      </div>
+
+      <div class="md-form">
+        <input type="text" id="output" class="form-control" required />
+        <label for="output">Input output data</label>
+      </div>
+      <button type="submit" class="btn btn-primary">저장</button>
+    </form>
+    <!-- End your project here-->
+    <%- include("../footer"); %>
+    <script>
+      $(function () {
+        var pid;// = $("#pid").val();
+        $(".dropdown-item").click(function(e){
+          pid = e.target.attributes.value;
+          console.log(pid.value);
+        });
+        $("#createForm").submit((event) => {
+          event.preventDefault();
+          //console.log("called");
+          const problemId = pid.value;
+          const input = $("#input").val();
+          const output = $("#output").val();
+          console.log(problemId);
+          $.ajax({
+            url: "/api/example",
+            type: "POST",
+            data: { problemId, input, output },
+          })
+            .done(() => {
+              console.log("됐음?");
+              location.href = "/api/problem/" + problemId + "/example";
+            })
+            .fail((request, status, error) => {
+              alert(request.responseText);
+            });
+          //console.log(singer,title);
+        });
+      });
+    </script>
+  </body>
+</html>

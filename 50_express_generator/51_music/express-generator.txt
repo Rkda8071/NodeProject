@@ -1,0 +1,7 @@
+1. Express Generator (생성기)
+
+1) npm i express-generator
+2) express --view=pug 51_music
+또는
+3) npx express-generator --view=ejs 52_movie
+
