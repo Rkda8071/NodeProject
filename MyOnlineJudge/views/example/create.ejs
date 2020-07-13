@@ -6,26 +6,13 @@
     <form id="createForm">
       <!-- Start your project here-->
 
-      <!-- Basic dropdown -->
-      <button
-        class="btn btn-primary dropdown-toggle mr-4"
-        type="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        문제 선택
-      </button>
-
-      <div class="dropdown-menu">
-        <% result.forEach(problem => {%>
-        <a class="dropdown-item" value="<%= problem._id %>"
-          ><%= problem.title %>
-        </a>
-        <% }) %>
-      </div>
-      <!-- Basic dropdown -->
-
+      <select class="problem">
+        <option selected>문제 선택</option>
+          <% result.forEach(problem => {%>
+            <option value="<%= problem._id %>"><%= problem.title %></option> 
+          <% }) %>
+      </select>
+      
       <!-- Material input -->
 
       <div class="md-form">
@@ -39,21 +26,18 @@
       </div>
       <button type="submit" class="btn btn-primary">저장</button>
     </form>
+    
     <!-- End your project here-->
     <%- include("../footer"); %>
     <script>
       $(function () {
-        var pid;// = $("#pid").val();
-        $(".dropdown-item").click(function(e){
-          pid = e.target.attributes.value;
-          console.log(pid.value);
-        });
+        
         $("#createForm").submit((event) => {
           event.preventDefault();
-          //console.log("called");
-          const problemId = pid.value;
+          const problemId = $("#problem").val();
           const input = $("#input").val();
           const output = $("#output").val();
+
           console.log(problemId);
           $.ajax({
             url: "/api/example",
