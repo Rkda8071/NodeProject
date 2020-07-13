@@ -8,16 +8,17 @@
         type="button" 
         class="btn btn-primary"
         onclick="location.href='/api/submit/new'"
-    >등록</button>
-    <div class="row row-cols-1 row-cols-md-4">
+    >코드 제출</button>
+    <div class="row row-cols-1 row-cols-md-1">
         <% index = 0 %>
         <table id="tablePreview" class="table" style="margin-left: 30px;">
         <!--Table head-->
           <thead>
             <tr>
               <th>#</th>
-              <th>input Data</th>
-              <th>output Data</th>
+              <th>date</th>
+              <th>problem</th>
+              <th>code</th>
             </tr>
           </thead>
           <!--Table head-->
@@ -26,8 +27,9 @@
             <% result.forEach(submit => { %>
                 <tr>
                     <th scope="row"><%= ++index %></th>
-                    <td><%= submit.input %></td>
-                    <td><%= submit.output %></td>
+                    <td><%= submit.created %></td>
+                    <td><%= submit.problemId %></td>
+                    <td><%= submit.code %></td>
                 </tr>
             <% }) %>        
           </tbody>

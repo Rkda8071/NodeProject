@@ -4,24 +4,12 @@
 <body>
     <%- include("../menu"); %>
     <form id="createForm">
-        <!-- Start your project here-->  
-
-        <!-- 문제 선택 dropdown-->        
-        <button
-        class="btn btn-primary dropdown-toggle mr-4"
-        type="button"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-        > 문제 선택 </button>
-
-        <div class="dropdown-menu">
-            <% result.forEach(problem => {%>
-            <a class="dropdown-item" value="<%= problem._id %>"
-            ><%= problem.title %>
-            </a>
-            <% }) %>
-        </div>
+        <select class="browser-default custom-select" id = "problem">
+            <option selected>문제 선택</option>
+              <% result.forEach(problem => {%>
+                <option value="<%= problem._id %>"><%= problem.title %></option> 
+              <% }) %>
+        </select>
 
         <div class="form-group">
             <label for="code">코드</label>
@@ -36,15 +24,11 @@
     <!-- End your project here-->
     <%- include("../footer"); %>
     <script>
-        var pid;// = $("#pid").val();
-        $(".dropdown-item").click(function(e){
-          pid = e.target.attributes.value;
-          console.log(pid.value);
-        });
+                
         $(function(){ 
             $("#createForm").submit((event) => {
                 event.preventDefault();
-                const problemId = pid.value;
+                const problemId = $("#problem").val();
                 const code = $("#code").val();
                 console.log(code);
                 console.log(problemId);

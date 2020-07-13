@@ -4,9 +4,7 @@
   <body>
     <%- include("../menu"); %>
     <form id="createForm">
-      <!-- Start your project here-->
-
-      <select class="problem">
+      <select class="browser-default custom-select" id = "problem">
         <option selected>문제 선택</option>
           <% result.forEach(problem => {%>
             <option value="<%= problem._id %>"><%= problem.title %></option> 
