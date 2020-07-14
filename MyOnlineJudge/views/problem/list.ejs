@@ -6,7 +6,7 @@
     <%- include("../menu"); %>
     <button 
         type="button" 
-        class="btn btn-primary"
+        class="btn btn-warning"
         onclick="location.href='/api/problem/new'"
     >등록</button>
     <div class="row row-cols-1 row-cols-md-4">
@@ -26,7 +26,7 @@
             <!-- Text -->
             
             <!-- Button -->
-            <a href="/api/problem/<%= problem._id %>" class="btn btn-primary">상세 조회</a>
+            <a href="/api/problem/<%= problem._id %>" class="btn btn-warning">상세 조회</a>
         
             </div>
         </div>
