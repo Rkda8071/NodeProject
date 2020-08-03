@@ -1,0 +1,39 @@
+extends layout
+
+block content
+ h1= title
+ p 
+  font(color='DodgerBlue') #{username}
+  | 님 환영합니다.
+ 
+ #game
+  #yahtzee
+   table.dice-board
+    td
+    td
+    td
+    td
+    td
+   table.score-board
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    td
+    
+   #user
+    #list
+    #logs
+    input#start_button(type='button', value='Game Start!')
+    input#roll_button(type='button', value='roll dice')
+    input#username(type='hidden', value= username)
