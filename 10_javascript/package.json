@@ -7,8 +7,9 @@
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "finalhandler": "^1.1.2"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
