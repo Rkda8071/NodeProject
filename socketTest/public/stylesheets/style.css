@@ -2,6 +2,10 @@
 	width: 50%; 
 	height: 500px;
 }
+#current_users{
+	width: 50%; 
+	height: 100px;
+}
 #name{ 
 	width: 10%; 
 }

@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('yahtzee:server');
+var debug = require('debug')('bingo:server');
 var http = require('http');
 
 /**
