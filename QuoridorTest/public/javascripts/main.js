@@ -26,7 +26,10 @@ var quoridor = {
         socket.on("update_users", function (data, user_count) {
             console.log(data);
             user_cnt = user_count;
-            self.update_userlist(data, socket);
+			self.update_userlist(data, socket);
+
+			self.what_you_do = 0; document.getElementById("place_button").value = "Place";
+			self.color_map();
         });
 
 		socket.on("update_map", function (map) {
@@ -42,7 +45,9 @@ var quoridor = {
                 else if (map[y][x] == 1) $(this).html('V '); // 첫번째 플레이어
                 else if (map[y][x] == 2) $(this).html('U '); // 두번째 플레이어
                 else $(this).html('B '); // 벽 
-            });
+			});
+			
+			//self.color_map();
         });
         //join
         socket.on("connect", function () {
@@ -55,12 +60,12 @@ var quoridor = {
 				console.log({ y, x });
 				console.log(self.is_my_turn);
 				if (self.is_my_turn) {
-                    if (y % 2 == 0 && x % 2 == 0) {
+                    if (self.what_you_do == 1 && y % 2 == 0 && x % 2 == 0) {
                         // player move
                         socket.emit("player_move", y, x);
-                    } else if (y % 2 && x % 2){
+                    } else if (self.what_you_do >= 2 && y % 2 && x % 2){
                         // place obstacle
-                        socket.emit("place_obstacle", y, x);
+						socket.emit("place_obstacle", y, x, self.what_you_do - 2);
                     }
                 } else {
                     // <알림> 차례가 아닙니다!
@@ -70,7 +75,26 @@ var quoridor = {
 		
 		$("#move_button").click(function () {
 			if (self.is_my_turn) {
-				self.what_you_do = 1;
+				if (self.what_you_do != 1) self.what_you_do = 1;
+				else self.what_you_do = 0;
+				self.color_map();
+			}
+		});
+		$("#place_button").click(function () {
+			if (self.is_my_turn) {
+				if (self.what_you_do == 0) {
+					self.what_you_do = 2;
+					// $("#place_button").html("LeftRight");
+					document.getElementById("place_button").value = "LeftRight";
+					//$("#place_button").value() = "LeftRight";
+				}
+				else if (self.what_you_do == 2) {
+					self.what_you_do = 4;
+					document.getElementById("place_button").value = "UpDown";
+				}
+				else {
+					self.what_you_do = 0; document.getElementById("place_button").value = "Place";
+				}
 				self.color_map();
 			}
 		});
@@ -82,7 +106,6 @@ var quoridor = {
 			//send num to other players
 			socket.emit("select", { username: $('#username').val(), num: $(obj).text() });		
 			this.check_num(obj);
-			
 			this.is_my_turn = false;
 		}
 		else {
@@ -91,21 +114,29 @@ var quoridor = {
 	},
 	
 	color_map: function () {
-		console.log(map);
-            $("table.quoridor-board td").each(function (i) {
-				var y = parseInt(i / 17), x = i % 17;
-				if (x % 2 == 0 || y % 2 == 0) {
-					
+		//console.log(this.what_you_do);
+		var ang = this.what_you_do;
+		$("table.quoridor-board td").each(function (i) {
+			var y = parseInt(i / 17), x = i % 17;
+			if (ang == 0) {
+				$(this).css("color", "black");
+			}
+			else if (ang == 1) {
+				if (x % 2 == 0 && y % 2 == 0) {
+					$(this).css("color", "red");
+				} else {
+					$(this).css("color", "lightgray");
 				}
-				/*
-				$(this).css("text-decoration", "line-through");
-				$(this).css("color", "lightgray");
-				*/
-                if (map[y][x] == 0) $(this).html('X '); // 빈 공간
-                else if (map[y][x] == 1) $(this).html('V '); // 첫번째 플레이어
-                else if (map[y][x] == 2) $(this).html('U '); // 두번째 플레이어
-                else $(this).html('B '); // 벽 
-            });
+			} else {
+				if (x % 2 == 1 && y % 2 == 1) {
+					$(this).css("color", "red");
+				} else {
+					$(this).css("color", "lightgray");
+				}
+			}
+			console.log($(this).text());
+			if($(this).text() != 'X ') $(this).css("color", "black");
+		});
 	},
 	
 	check_num: function (obj) {
@@ -126,8 +157,11 @@ var quoridor = {
 				turn = "(*) ";
 				console.log(value.name);
 				console.log($('#username').val());
-				if(value.id == this_socket.id ) self.is_my_turn = true;
-				//else self.is_my_turn = false;
+				if (value.id == this_socket.id) {
+					self.what_you_do = 0;
+					self.is_my_turn = true;
+				}
+				else self.is_my_turn = false;
 			}// else self.is_my_turn = false;
 
 			if(value.id == this_socket.id ){

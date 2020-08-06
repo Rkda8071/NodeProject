@@ -54,14 +54,14 @@ io.on('connection', function (socket) {
 
         io.emit('update_users', users, user_count);
         if (user_count == 2) {
-			console.log("start");
+			console.log("game start");
 			for (var i = 0; i < 17; i++) 
 				for (var j = 0; j < 17; j++) map[i][j] = 0;
 		
 			map[0][8] = 1;
 			map[16][8] = 2;
             io.emit("update_map", map);
-            socket.broadcast.emit("game_started", data);
+            //socket.broadcast.emit("game_started", data);
             users[turn_count].turn = true;
             io.sockets.emit('update_users', users);
         }
@@ -72,6 +72,7 @@ io.on('connection', function (socket) {
         var ang = chk(y, x, turn_count, 0);
         if (ang) {
             map[y][x] = turn_count + 1;
+            // 턴넘기기
             io.sockets.emit("update_map", map);
             users[turn_count].turn = false;
             turn_count = (turn_count + 1) % 2;
@@ -82,16 +83,32 @@ io.on('connection', function (socket) {
 			console.log("이게 아닌데");
         }
     });
-    socket.on('place_obstacle', function (y, x) {
-        
+    socket.on('place_obstacle', function (y, x, r) {
+        var ang = (map[y][x] == 0);
+        // r이 0이면 좌우 2면 상하
+
+        for (var i = r; i < 2 + r; i++) {
+            var yy = y + yyy[i], xx = x + xxx[i];
+            if (map[yy][xx]) ang = false;
+        }
+        if (ang) {
+            for (var i = r; i < 2 + r; i++) {
+                var yy = y + yyy[i], xx = x + xxx[i];
+                map[yy][xx] = 3;
+            }
+            map[y][x] = 3;
+            // 턴넘기기
+            io.sockets.emit("update_map", map);
+            users[turn_count].turn = false;
+            turn_count = (turn_count + 1) % 2;
+            users[turn_count].turn = true;
+            io.sockets.emit('update_users', users);
+        } else {
+            
+            // 잘못된 선택
+        }
     });
-    /*socket.on('game_start', function (data) {
-		socket.broadcast.emit("game_started", data);
-		users[turn_count].turn = true;
-		
-		io.emit('update_users', users);
-    });*/
-    
+
     socket.on('disconnect', function() {
 		console.log('user disconnected : ', socket.id, socket.username);
 		for(var i=0; i<user_count; i++){
