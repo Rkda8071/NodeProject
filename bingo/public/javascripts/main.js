@@ -9,7 +9,7 @@ var bingo = {
 		this.is_my_turn = false;
 		
 		socket = io();
-
+		
 		socket.on("check_number", function (data) {
 			self.where_is_it(data.num);
 			self.print_msg(data.username + "님이 '" + data.num + "'을 선택했습니다.");

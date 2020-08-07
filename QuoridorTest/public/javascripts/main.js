@@ -11,17 +11,13 @@ var quoridor = {
 		//map = new Array(20, 20);
         socket = io();
         
-        /*socket.on("check_number", function (data) {
-            //self.where_is_it(data.num);
-            self.print_msg(data.username + "님이 '" + data.id + "'을 선택했습니다.");
-        });*/
-		
-        /*socket.on("init_attr", function (user) {
-            $("table.dice-board td").each(function (i) {
-                $(this).css("color", "black");
-                $(this).attr("checked", false);
-            });
-        });*/
+		socket.on("game_over", function (who) {
+			self.print_msg( (who + 1) +"번 플레이어가 승리했습니다!");
+		});
+		socket.on("print_msg", function (msg) {
+			console.log(msg);
+			if(self.is_my_turn) self.print_msg(msg);
+		});
 
         socket.on("update_users", function (data, user_count) {
             console.log(data);
@@ -68,7 +64,8 @@ var quoridor = {
 						socket.emit("place_obstacle", y, x, self.what_you_do - 2);
                     }
                 } else {
-                    // <알림> 차례가 아닙니다!
+					// <알림> 차례가 아닙니다!
+					self.print_msg("<알림> 차례가 아닙니다!");
                 }
             });
 		});
@@ -135,7 +132,8 @@ var quoridor = {
 				}
 			}
 			console.log($(this).text());
-			if($(this).text() != 'X ') $(this).css("color", "black");
+			if ($(this).text() != 'X ') $(this).css("color", "black");
+			if($(this).text() == 'U ' || $(this).text() == 'V ') $(this).css("color", "blue");
 		});
 	},
 	
@@ -174,8 +172,8 @@ var quoridor = {
 	},
 	
 	print_msg: function (msg) {
-		$("#logs").append(msg + "<br />");
-		$('#logs').scrollTop($('#logs')[0].scrollHeight);
+		$("#chatLog").append(msg + "\n");
+		$('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
 	}
 };
 
