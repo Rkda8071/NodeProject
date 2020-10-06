@@ -1,0 +1,7 @@
+{
+    "musicList": [
+        { "id": 1, "singer": "아이즈원", "title": "피에스타", "active": false },
+        { "id": 2, "singer": "지코", "title": "아무노래", "active": false },
+        { "id": 3, "singer": "있지", "title": "워너비", "active": false }
+    ]
+}

@@ -6,50 +6,38 @@
 // 5.
 // 6. 주석 작성
 
-import React, { Children } from "react";
-import StateSample2 from "./StateSample2";
+import React, { useRef, useState } from "react";
 import Hello from "./Hello";
 import Hello2 from "./Hello2";
+import Hello3 from "./Hello3";
 import "./App.css";
-import InputSample from "./InputSample";
-import InputSample2 from "./InputSample2";
 
+// 주석 처리 해도 됨 (이전 내용임) 사용하고 싶다면 App으로 이름 바꾸기!
 function App() {
-  //StateSample.js
-  //return <StateSample2 />;
-  return <InputSample2 />;
-
-  // Hello.js
-  /*const id = "0"; 
-  const name = "이름없음";
-  const nickname = "별명없음";
-  const color = "black";
+  const name = "React";
   const style = {
+    fontSize: 30,
     backgroundColor: "yellow",
     color: "blue",
-    fontSize: 30,
   };
 
   return (
     <>
+      <div style={style}>YEE</div>
       {name}
-      <Hello />
-      <div style={style}>
-        <Hello />
-        {name}
-      </div>
-      
+      <div class="box"></div> {/*warning 발생*/}
       <div className="box"></div>
-      <Hello name={"손강민"} color="blue" isLoggedIn={true}>
-        태그 안의 데이터
+      <Hello name="홍길동" color="red" isLoggedin>
+        태그 안의 데이터 {/*children: "텍스트 내용"*/}
       </Hello>
-      <Hello2 messages={["메시지1", "메시지2", "메시지3"]}></Hello2>
-
-      <Hello2 id="3314" name="손강민" color="Yellow" >우끼끼</Hello2>
+      <Hello></Hello>
+      <Hello2 id="3327" name="이주원" color="blue">
+        한국사
+      </Hello2>
       <Hello2></Hello2>
-      
+      <Hello3 messages={["메시지1", "메시지2", "메시지3"]}></Hello3>
     </>
-  );*/
+  );
 }
 
 export default App;
