@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import axios from "axios";
 function App() {
-  return 
+  return <></>
 
 }
 
