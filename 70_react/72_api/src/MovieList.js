@@ -1,6 +1,6 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import axios from "axios";
-import Music from './Music';
+import Movie from './Movie';
 // LOADING, SUCCESS, ERROR
 function reducer(state, action) {
     switch (action.type) {
@@ -19,13 +19,15 @@ function reducer(state, action) {
             };
         case "ERROR":
             return {
-                
+                loading: false,
+                data: null,
+                error: action   
             }
         default:
             throw new Error(`Unhandled action type: ${action.type}`);
     }
 }
-function MusicList() {
+function MovieList() {
     const [id, setId] = useState(null);
     const [state, dispatch] = useReducer(reducer, {
         loading: false,
@@ -37,7 +39,7 @@ function MusicList() {
         dispatch({ type: "LOADING" });
         try {
             // GET: 조회, POST: 등록, PUT: 수정, DELETE: 삭제
-            const response = await axios.get("http://localhost:5000/musicList") //비동기
+            const response = await axios.get("http://localhost:5000/movieList") //비동기
             
             dispatch({ type: "SUCCESS", data: response.data })
         } catch (e) {
@@ -50,31 +52,30 @@ function MusicList() {
     /*useEffect(() => {
         fetchData();
     }, []);*/
-    const { loading, data:musicList, error } = state;
+    const { loading, data:movieList, error } = state;
 
     if (loading) return <div>로딩중...</div>
     if (error) return <div>에러가 발생했습니다</div>
-    if (!musicList) //return null;
+    if (!movieList) //return null;
         return <button onClick={fetchData}>불러오기</button>
     
     return (
         <>
             <ul>
-                {musicList.map((music) => (
-                    <li key={music.id} 
-                        onClick={() => setId(music.id)}
+                {movieList.map((movie) => (
+                    <li key={movie.id} 
+                        onClick={() => setId(movie.id)}
                         style={{cursor: "pointer"}}
                     >
-                        {music.title}({music.singer})
+                        {movie.title}({movie.year})
                     </li>
-                    //<li key={music.id}>{music.title}({music.title})</li>
                 ))}
             </ul>
             <button onClick={fetchData}>불러오기</button>
-            {id && <Music id={id} />}
+            {id && <Movie id={id} />}
         </>
     );
 }
 
 
-export default MusicList;
+export default MovieList;
